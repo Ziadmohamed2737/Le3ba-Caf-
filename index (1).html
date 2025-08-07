@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>  Le3ba Cafe Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0a192f;
+            --dark-blue: #0d1b36;
+            --accent-blue: #FFFFFF4A;
+            --gold: #d4af37;
+            --silver: #c0c0c0;
+            --light-text: #f8f9fa;
+            --dark-text: #e2e8f0;
+            --card-bg: rgba(19, 34, 67, 0.8);
+            --popular-tag: linear-gradient(135deg, #d4af37, #f9d423);
+            --transition: all 0.3s ease;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --section-title: #00E933ED;
+            --price-color: #FFFFFF;
+        }
+
+        .light-mode {
+            --primary-dark: #f0f4f8;
+            --dark-blue: #dbe6fd;
+            --accent-blue: #3d5afe;
+            --gold: #ff9800;
+            --silver: #757575;
+            --light-text: #263238;
+            --dark-text: #455a64;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --popular-tag: linear-gradient(135deg, #ff9800, #ffd54f);
+            --section-title: #66F73B;
+            --price-color: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: var(--transition);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark), var(--dark-blue));
+            color: var(--light-text);
+            line-height: 1.6;
+            min-height: 100vh;
+            background-attachment: fixed;
+            overflow-x: hidden;
+            padding-top: 120px; /* Space for fixed header */
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Main Header Styles */
+        .main-header {
+            background: rgba(10, 25, 47, 0.95);
+            padding: .6rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            border-bottom: 3px solid #FFFFFF;
+            transition: transform 0.4s ease;
+        }
+
+        .light-mode .main-header {
+            background: rgba(240, 244, 248, 0.95);
+            border-bottom: 1px solid rgba(255, 152, 0, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            font-size: .2rem;
+            background: linear-gradient(to right, var(--gold), var(--silver));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo-icon {
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-left: -300px;
+            
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(15deg) scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: rgba(30, 58, 138, 0.2);
+        }
+
+        /* Navigation - Categories Bar */
+        .categories-bar {
+            background: var(--accent-blue);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+            transform: translateY(-100%);
+            transition: transform 0.4s ease;
+            padding: 10px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .categories-bar.visible {
+            transform: translateY(0);
+        }
+
+        .nav-container {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px 0;
+            gap: 10px;
+            scrollbar-width: thin;
+        }
+
+        .nav-container::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .nav-container::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 5px;
+        }
+
+        .nav-link {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 30px;
+            white-space: nowrap;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.05rem;
+        }
+
+        .light-mode .nav-link {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, var(--gold), #f9d423);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-color: var(--gold);
+            color: #000;
+        }
+
+        .nav-link i {
+            color: var(--light-text);
+        }
+
+        .nav-link:hover i, .nav-link.active i {
+            color: #000;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 40px;
+            text-align: center;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%230a192f" fill-opacity="0.7" d="M0,192L48,186.7C96,181,192,171,288,160C384,149,480,139,576,149.3C672,160,768,192,864,192C960,192,1056,160,1152,138.7C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg') bottom no-repeat, linear-gradient(135deg, var(--primary-dark), var(--dark-blue));
+            background-size: contain;
+            position: relative;
+        }
+
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--gold), #B5930D);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: var(--dark-text);
+            line-height: 1.8;
+        }
+
+        .divider {
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+            width: 70%;
+            margin: 40px auto;
+            border-radius: 50%;
+        }
+
+        /* Menu Sections */
+        .section {
+            margin: 60px 0;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .light-mode .section {
+            border: 1px solid rgba(255, 152, 0, 0.1);
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--gold), var(--accent-blue));
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 35px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--section-title);
+        }
+
+        .section h2 i {
+            font-size: 1.8rem;
+            color: var(--gold);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .menu-item {
+            background: rgba(30, 58, 138, 0.15);
+            border-radius: 30px;
+            padding: 25px;
+            position: relative;
+            border: 1px solid #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .light-mode .menu-item {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1.5px solid #000000;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-100px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: #3BFF00;
+            background: #0023FFB8;
+        }
+
+        .light-mode .menu-item:hover {
+            border-color: rgba(255, 152, 0, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--light-text);
+            flex-grow: 1;
+        }
+
+        .light-mode .name {
+            color: var(--light-text);
+        }
+
+        .price {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--price-color);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 15px;
+            border-radius: 30px;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .light-mode .price {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Popular Tag - الأكثر طلبا */
+        .popular-tag {
+            position: absolute;
+            top: -12px;
+            left: 25px;
+            background: var(--popular-tag);
+            color: #000;
+            padding: 8px 25px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+            text-align: center;
+            transform: rotate(-3deg);
+            letter-spacing: 1px;
+        }
+
+        .popular-tag::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 8px solid #f9d423;
+        }
+
+        .description {
+            color: var(--dark-text);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(212, 175, 55, 0.3);
+        }
+
+        .light-mode .description {
+            border-top: 1px dashed rgba(255, 152, 0, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(10, 25, 47, 0.95);
+            padding: 50px 0 30px;
+            margin-top: 80px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            position: relative;
+        }
+
+        .light-mode footer {
+            background: rgba(240, 244, 248, 0.95);
+            border-top: 1px solid rgba(255, 152, 0, 0.3);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: var(--gold);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            color: var(--gold);
+            font-size: 1.5rem;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .light-mode .social-links a {
+            background: var(--section-title);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-8px) rotate(5deg);
+            background: var(--gold);
+            color: var(--primary-dark);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin: 25px 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            color: var(--dark-text);
+        }
+
+        .light-mode .contact-item {
+            color: var(--light-text);
+        }
+
+        .contact-item i {
+            color: var(--gold);
+            font-size: 1.3rem;
+        }
+
+        .copyright {
+            font-size: 1.1rem;
+            color: var(--dark-text);
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            width: 100%;
+        }
+
+        .light-mode .copyright {
+            border-top: 1px solid rgba(255, 152, 0, 0.2);
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--popular-tag);
+            color: #000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+            font-weight: 800;
+            border: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero h2 {
+                font-size: 2.8rem;
+            }
+            
+            .section h2 {
+                font-size: 2.2rem;
+            }
+            
+            .menu-grid {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 100px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+            
+            .hero {
+                padding: 60px 0 30px;
+            }
+            
+            .hero h2 {
+                font-size: 2.3rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .section {
+                padding: 30px 20px;
+                margin: 40px 0;
+            }
+            
+            .section h2 {
+                font-size: 1.9rem;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .name {
+                font-size: 1.3rem;
+            }
+            
+            .price {
+                font-size: 1.5rem;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-link {
+                padding: 10px 15px;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding-top: 90px;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 25px 15px;
+            }
+            
+            .section h2 {
+                font-size: 1.7rem;
+            }
+            
+            .item-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .price {
+                align-self: flex-end;
+            }
+            
+            .back-to-top {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            
+            .nav-link {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+                 .zizo h1 {
+                font-size: 1.1rem;
+                margin-left: 200px;
+                margin-top: 50px;
+            }
+            
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Header -->
+    <header class="main-header" id="mainHeader">
+        <div class="container header-content">
+      
+            
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-sun"></i>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Categories Bar -->
+    <nav class="categories-bar" id="categoriesBar">
+        <div class="container">
+            <div class="nav-container">
+                <a href="#hot-drinks" class="nav-link active"><i class="fas fa-fire"></i> المشروبات الساخنة</a>
+                <a href="#coffee" class="nav-link"><i class="fas fa-coffee"></i> القهوة</a>
+                <a href="#boba-shake" class="nav-link"><i class="fas fa-blender"></i> بوبا شيك</a>
+                <a href="#cookers-drink" class="nav-link"><i class="fas fa-martini-glass"></i> كوكرز درينك</a>
+                <a href="#frappe" class="nav-link"><i class="fas fa-glass-water"></i> فرابي</a>
+                <a href="#boba-soda" class="nav-link"><i class="fas fa-bubbles"></i> بوبا صودا</a>
+                <a href="#yogurt" class="nav-link"><i class="fas fa-jar"></i> زبادي</a>
+                <a href="#fresh-juice" class="nav-link"><i class="fas fa-apple-whole"></i> عصائر طازجة</a>
+                <a href="#smoothie" class="nav-link"><i class="fas fa-whiskey-glass"></i> سموذي</a>
+                <a href="#avocado" class="nav-link"><i class="fas fa-seedling"></i> أفوكادو</a>
+                <a href="#cold-drinks" class="nav-link"><i class="fas fa-snowflake"></i> مشروبات باردة</a>
+                <a href="#milk-shake" class="nav-link"><i class="fas fa-ice-cream"></i> ميلك شيك</a>
+                <a href="#ice-tea" class="nav-link"><i class="fas fa-mug-hot"></i> آيس تي</a>
+                <a href="#ice-coffee" class="nav-link"><i class="fas fa-mug-saucer"></i> آيس كوفي</a>
+                <a href="#cocktails" class="nav-link"><i class="fas fa-wine-glass"></i> كوكتيلات</a>
+                <a href="#dessert" class="nav-link"><i class="fas fa-cookie-bite"></i> حلويات</a>
+                <a href="#shisha" class="nav-link"><i class="fas fa-smoking"></i> شيشة</a>
+                <a href="#boba-smoothie" class="nav-link"><i class="fas fa-blender-phone"></i> بوبا سموذي</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h2> My Menu </h2>
+            <p>استمتع بأجود أنواع القهوة والشاي والحلويات الطازجة في أجواء راقية وأنيقة تتناسب مع أذواقكم المميزة</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Hot Drinks Section -->
+        <section id="hot-drinks" class="section">
+            <h2><i class="fas fa-fire"></i> المشروبات الساخنة</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="name">شاي</div>
+                        <div class="price">33 ج.م</div>
+                    </div>
+                    <div class="description">شاي أسود عالي الجودة مع نكهة مميزة</div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">شاي أخضر</div>
+                        <div class="price">38 ج.م</div>
+                    </div>
+                    <div class="description">شاي أخضر طازج مع فوائد صحية عديدة</div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="name">ينسون</div>
+                        <div class="price">39 ج.م</div>
+                    </div>
+                    <div class="description">ينسون طبيعي مع فوائد مهدئة</div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">سحلب مكسرات</div>
+                        <div class="price">76 ج.م</div>
+                    </div>
+                    <div class="description">سحلب كريمي مع مكسرات محمصة</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Coffee Section -->
+        <section id="coffee" class="section">
+            <h2><i class="fas fa-coffee"></i> القهوة</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="name">قهوة تركي سنجل</div>
+                        <div class="price">44 ج.م</div>
+                    </div>
+                    <div class="description">قهوة تركية أصيلة برائحة الهيل</div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">كابتشينو</div>
+                        <div class="price">79 ج.م</div>
+                    </div>
+                    <div class="description">كابتشينو كلاسيكي مع رغوة حليب</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Boba Shake Section -->
+        <section id="boba-shake" class="section">
+            <h2><i class="fas fa-blender"></i> بوبا شيك</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">بوبا شيك فراولة</div>
+                        <div class="price">65 ج.م</div>
+                    </div>
+                    <div class="description">مزيج من الفراولة الطازجة وحبيبات البوبا</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cookers Drink Section -->
+        <section id="cookers-drink" class="section">
+            <h2><i class="fas fa-martini-glass"></i> كوكرز درينك</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">كوكرز بيري بلاست</div>
+                        <div class="price">75 ج.م</div>
+                    </div>
+                    <div class="description">توت طازج مع نعناع</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Frappe Section -->
+        <section id="frappe" class="section">
+            <h2><i class="fas fa-glass-water"></i> فرابي</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">فرابي موكا</div>
+                        <div class="price">75 ج.م</div>
+                    </div>
+                    <div class="description">مزيج من القهوة والشوكولاتة المثلجة</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Boba Soda Section -->
+        <section id="boba-soda" class="section">
+            <h2><i class="fas fa-bubbles"></i> بوبا صودا</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">بوبا صودا فراولة</div>
+                        <div class="price">60 ج.م</div>
+                    </div>
+                    <div class="description">صودا الفراولة مع حبيبات البوبا</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Yogurt Section -->
+        <section id="yogurt" class="section">
+            <h2><i class="fas fa-jar"></i> زبادي</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">زبادي يوناني بالفواكه</div>
+                        <div class="price">65 ج.م</div>
+                    </div>
+                    <div class="description">زبادي يوناني مع فواكه طازجة</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fresh Juice Section -->
+        <section id="fresh-juice" class="section">
+            <h2><i class="fas fa-apple-whole"></i> عصائر طازجة</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">عصير برتقال طازج</div>
+                        <div class="price">45 ج.م</div>
+                    </div>
+                    <div class="description">عصير برتقال طازج مع ليمون</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Smoothie Section -->
+        <section id="smoothie" class="section">
+            <h2><i class="fas fa-whiskey-glass"></i> سموذي</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">سموذي توت</div>
+                        <div class="price">65 ج.م</div>
+                    </div>
+                    <div class="description">توت مختلط مع موز</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Avocado Section -->
+        <section id="avocado" class="section">
+            <h2><i class="fas fa-seedling"></i> أفوكادو</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">ميلك شيك أفوكادو</div>
+                        <div class="price">70 ج.م</div>
+                    </div>
+                    <div class="description">أفوكادو طازج مع حليب</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cold Drinks Section -->
+        <section id="cold-drinks" class="section">
+            <h2><i class="fas fa-snowflake"></i> مشروبات باردة</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">ماء معدني</div>
+                        <div class="price">25 ج.م</div>
+                    </div>
+                    <div class="description">ماء معدني طبيعي</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Milk Shake Section -->
+        <section id="milk-shake" class="section">
+            <h2><i class="fas fa-ice-cream"></i> ميلك شيك</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">ميلك شيك فراولة</div>
+                        <div class="price">65 ج.م</div>
+                    </div>
+                    <div class="description">ميلك شيك كريمي مع فراولة طازجة</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ice Tea Section -->
+        <section id="ice-tea" class="section">
+            <h2><i class="fas fa-mug-hot"></i> آيس تي</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">آيس تي خوخ</div>
+                        <div class="price">60 ج.م</div>
+                    </div>
+                    <div class="description">شاي مثلج بنكهة الخوخ</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ice Coffee Section -->
+        <section id="ice-coffee" class="section">
+            <h2><i class="fas fa-mug-saucer"></i> آيس كوفي</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">آيس كوفي</div>
+                        <div class="price">75 ج.م</div>
+                    </div>
+                    <div class="description">قهوة مثلجة مع حليب ومكعبات ثلج</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cocktails Section -->
+        <section id="cocktails" class="section">
+            <h2><i class="fas fa-wine-glass"></i> كوكتيلات</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">كوكتيل مانجو</div>
+                        <div class="price">70 ج.م</div>
+                    </div>
+                    <div class="description">مانجو مع أناناس وبرتقال</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dessert Section -->
+        <section id="dessert" class="section">
+            <h2><i class="fas fa-cookie-bite"></i> حلويات</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">تشيز كيك</div>
+                        <div class="price">85 ج.م</div>
+                    </div>
+                    <div class="description">تشيز كيك كلاسيكي مع طبقة توت</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shisha Section -->
+        <section id="shisha" class="section">
+            <h2><i class="fas fa-smoking"></i> شيشة</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">تفاحتين</div>
+                        <div class="price">120 ج.م</div>
+                    </div>
+                    <div class="description">نكهة التفاح المزدوجة</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Boba Smoothie Section -->
+        <section id="boba-smoothie" class="section">
+            <h2><i class="fas fa-blender-phone"></i> بوبا سموذي</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="popular-tag">الأكثر طلبًا</div>
+                    <div class="item-header">
+                        <div class="name">بوبا سموذي فراولة</div>
+                        <div class="price">75 ج.م</div>
+                    </div>
+                    <div class="description">فراولة طازجة مع حبيبات البوبا</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-mug-hot"></i>
+            </div>
+            
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>24 ش مكرم عبيد - بجوار مطعم بحيري</span>
+                </div>
+                
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+201050368224</span>
+                </div>
+                
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <span>يوميًا من 12 صباحًا إلى 12 منتصف الليل</span>
+                </div>
+            </div>
+            
+            <p class="copyright">© 2025 LE3BA Cafe - جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+
+        // Check for saved theme preference
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'light') {
+            body.classList.add('light-mode');
+            icon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+            icon.classList.replace('fa-sun', 'fa-moon');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Header Hide/Show Functionality
+        const mainHeader = document.getElementById('mainHeader');
+        const categoriesBar = document.getElementById('categoriesBar');
+        let lastScroll = 0;
+        const scrollThreshold = 100; // Amount to scroll before hiding header
+
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset;
+            
+            // If scrolling down
+            if (currentScroll > lastScroll && currentScroll > scrollThreshold) {
+                // Hide main header
+                mainHeader.style.transform = 'translateY(-100%)';
+                // Show categories bar
+                categoriesBar.classList.add('visible');
+            } 
+            // If scrolling up
+            else if (currentScroll < lastScroll) {
+                // Show main header
+                mainHeader.style.transform = 'translateY(0)';
+                // Hide categories bar
+                categoriesBar.classList.remove('visible');
+            }
+            
+            // If at the top of the page
+            if (currentScroll <= 0) {
+                mainHeader.style.transform = 'translateY(0)';
+                categoriesBar.classList.remove('visible');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Back to Top Button
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth Scrolling for Navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all nav links
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Add active class to clicked nav link
+                this.classList.add('active');
+                
+                // Scroll to section
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Highlight active section in navigation
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (window.scrollY >= sectionTop - 150 && 
+                    window.scrollY < sectionTop + sectionHeight - 150) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Animation on scroll
+        const animateOnScroll = () => {
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            menuItems.forEach((item, index) => {
+                const itemTop = item.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (itemTop < windowHeight - 100) {
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        };
+
+        // Set initial state for animation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(30px)';
+            item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        });
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+</html>
